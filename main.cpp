@@ -11,6 +11,7 @@ void add(int* table, int &curr);
 void manadd(int* table, int &curr);
 void display(int index, int* table, int depth, int size);
 void print(int* table);
+void remove(int* table, int size);
 void check(int* table, int curr);
 int right(int curr){
   return curr * 2 + 1;
@@ -27,15 +28,14 @@ int main(){
   srand(time(0));
   bool quit = false;//bool to check when user wants to quit
   int* table = new int[10];//Create intial table
-  char input[7];
   int curr = 0;
   for(int i = 0; i < 10; i++){
     table[i] = -1;
   }
   while(!quit){
     cout << "Type a valid command(ADD, MADD, PRINT, DISPLAY, QUIT)" << endl;//Prompt user for input
+    char input[10];
     cin >> input;
-    cout << endl;
     if(strcmp(input, "MADD") == 0){
       manadd(table, curr);
     }
@@ -43,7 +43,7 @@ int main(){
       add(table, curr);
     }
     else if(strcmp(input, "DISPLAY")==0){
-      display(1, table, 0, curr - 1);
+      display(1, table, 0, curr);
     }
     else if(strcmp(input,"PRINT") == 0){//If user wants to print a specific student
       print(table);
@@ -65,7 +65,7 @@ void add(int* table, int &curr){
     fstream file("nums.txt");
     char input[100];
     int count = 0;
-    int num = (rand() % 20) + 1;
+    int num = (rand() % 50) + 1;
     int n;
     char temp[100];
     while (file.getline(input, 100, ' ')) {
@@ -92,16 +92,15 @@ void manadd(int* table, int &curr){
   curr++;
 }
 
-void display(int index, int* table, int depth, int size){
-  cout << table[index-1] << endl;
-  if(right(index) <= size){
+void display(int index, int* table, int depth, int size){  
+  if(right(index) <= size && right(index) != -1){
     display(right(index), table, depth + 1, size);
   }
   for(int i =0; i < depth; i++){
     cout << "\t";
   }
   cout << table[index-1] << endl;
-  if(left(index) <= size){
+  if(left(index) <= size && left(index) != -1){
     display(left(index), table, depth + 1, size);
   }
 }
@@ -120,4 +119,8 @@ void check(int* table, int curr){
     check(table, parent(curr));
   }
     return;
+}
+
+void remove(int* table, int size){
+  
 }
