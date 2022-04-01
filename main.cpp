@@ -9,10 +9,9 @@ using namespace std;
 
 void add(int* table, int &curr);
 void manadd(int* table, int &curr);
-void display(int* table, int* o);
+void display(int index, int* table, int depth, int size);
 void print(int* table);
 void check(int* table, int curr);
-void order(int* table, int* order, int curr);
 int right(int curr){
   return curr * 2 + 1;
 }
@@ -29,15 +28,14 @@ int main(){
   bool quit = false;//bool to check when user wants to quit
   int* table = new int[10];//Create intial table
   char input[7];
-  int o[10];
   int curr = 0;
   for(int i = 0; i < 10; i++){
     table[i] = -1;
-    o[i] = -1;
   }
   while(!quit){
     cout << "Type a valid command(ADD, MADD, PRINT, DISPLAY, QUIT)" << endl;//Prompt user for input
     cin >> input;
+    cout << endl;
     if(strcmp(input, "MADD") == 0){
       manadd(table, curr);
     }
@@ -45,9 +43,7 @@ int main(){
       add(table, curr);
     }
     else if(strcmp(input, "DISPLAY")==0){
-      order(table, o, curr);
-
-      display(table, o);
+      display(1, table, 0, curr - 1);
     }
     else if(strcmp(input,"PRINT") == 0){//If user wants to print a specific student
       print(table);
@@ -96,15 +92,18 @@ void manadd(int* table, int &curr){
   curr++;
 }
 
-void order(int* table, int* order, int curr){
-  for(int i = 0; i < 10; i++){
-    
+void display(int index, int* table, int depth, int size){
+  cout << table[index-1] << endl;
+  if(right(index) <= size){
+    display(right(index), table, depth + 1, size);
   }
-}
-
-void display(int* table, int* o){
-  
-  
+  for(int i =0; i < depth; i++){
+    cout << "\t";
+  }
+  cout << table[index-1] << endl;
+  if(left(index) <= size){
+    display(left(index), table, depth + 1, size);
+  }
 }
 
 void print(int* table){
