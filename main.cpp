@@ -13,6 +13,8 @@ void display(int index, int* table, int depth, int size);
 void print(int* table);
 void remove(int* table, int size);
 void check(int* table, int curr);
+void rcheck(int* table, int curr);
+
 int right(int curr){
   return curr * 2 + 1;
 }
@@ -33,7 +35,7 @@ int main(){
     table[i] = -1;
   }
   while(!quit){
-    cout << "Type a valid command(ADD, MADD, PRINT, DISPLAY, QUIT)" << endl;//Prompt user for input
+    cout << "Type a valid command(ADD, REMOVE, MADD, PRINT, DISPLAY, QUIT)" << endl;//Prompt user for input
     char input[10];
     cin >> input;
     if(strcmp(input, "MADD") == 0){
@@ -41,6 +43,14 @@ int main(){
     }
     if(strcmp(input,"ADD") == 0){//If user wants to add students
       add(table, curr);
+    }
+    if(strcmp(input,"REMOVE") == 0){//If user wants to add students
+      remove(table, curr);
+      cout << endl;
+      curr = 0;
+      for(int i = 0; i < 10; i++){
+	table[i] = -1;
+      }   
     }
     else if(strcmp(input, "DISPLAY")==0){
       display(1, table, 0, curr);
@@ -122,5 +132,28 @@ void check(int* table, int curr){
 }
 
 void remove(int* table, int size){
-  
+  cout << table[0] << " ";
+  table[0] = table[size-1];
+  table[size-1] = -1;
+  rcheck(table, 1);
+  size = size - 1;
+  if(size != 0){
+    remove(table, size);
+  }
+}
+
+void rcheck(int* table, int curr){
+  if(table[right(curr)-1] > table[left(curr)-1] && table[right(curr)-1] > table[curr-1]){
+    int temp = table[curr-1];
+    table[curr-1] = table[right(curr)-1];
+    table[right(curr)-1] = temp;
+    rcheck(table, right(curr));
+  }
+  else if(table[left(curr)-1] > table[right(curr)-1] && table[left(curr)-1] > table[curr-1]){
+    int temp = table[curr-1];
+    table[curr-1] = table[left(curr)-1];
+    table[left(curr)-1] = temp;
+    rcheck(table, left(curr));
+  }
+  return;
 }
