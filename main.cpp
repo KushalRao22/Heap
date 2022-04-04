@@ -29,9 +29,9 @@ int parent(int curr){
 int main(){
   srand(time(0));
   bool quit = false;//bool to check when user wants to quit
-  int* table = new int[10];//Create intial table
+  int* table = new int[100];//Create intial table
   int curr = 0;
-  for(int i = 0; i < 10; i++){
+  for(int i = 0; i < 100; i++){
     table[i] = -1;
   }
   while(!quit){
@@ -48,7 +48,7 @@ int main(){
       remove(table, curr);
       cout << endl;
       curr = 0;
-      for(int i = 0; i < 10; i++){
+      for(int i = 0; i < 100; i++){
 	table[i] = -1;
       }   
     }
@@ -116,7 +116,7 @@ void display(int index, int* table, int depth, int size){
 }
 
 void print(int* table){
-  for(int i = 0; i < 10; i++){
+  for(int i = 0; i < 100; i++){
     cout << table[i] <<  endl;
   }
 }
@@ -132,13 +132,12 @@ void check(int* table, int curr){
 }
 
 void remove(int* table, int size){
-  cout << table[0] << " ";
-  table[0] = table[size-1];
-  table[size-1] = -1;
-  rcheck(table, 1);
-  size = size - 1;
-  if(size != 0){
-    remove(table, size);
+  while(size != 0){
+    cout << table[0] << " ";
+    table[0] = table[size - 1];
+    table[size - 1] = -1;
+    rcheck(table, 1);
+    size = size - 1;
   }
 }
 
@@ -148,12 +147,13 @@ void rcheck(int* table, int curr){
     table[curr-1] = table[right(curr)-1];
     table[right(curr)-1] = temp;
     rcheck(table, right(curr));
+    return;
   }
-  else if(table[left(curr)-1] > table[right(curr)-1] && table[left(curr)-1] > table[curr-1]){
+  if(table[left(curr)-1] > table[right(curr)-1] && table[left(curr)-1] > table[curr-1]){
     int temp = table[curr-1];
     table[curr-1] = table[left(curr)-1];
     table[left(curr)-1] = temp;
     rcheck(table, left(curr));
+    return;
   }
-  return;
 }
